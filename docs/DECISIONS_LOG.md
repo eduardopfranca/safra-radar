@@ -37,6 +37,18 @@
 **Justificativa:** publico alvo (medio produtor 500–3.000 ha) nao tem letramento em mercado financeiro. Traducao e diferencial central do produto.
 **Impacto:** Glossary.md sera mantido como fonte de verdade dos termos publicos. Conteudo editorial pos-evento segue a mesma regra.
 
+### D10 — Probes-first para fontes novas
+**Data:** 22/05/2026
+**Decisao:** todo provedor de dado externo novo passa por probe de descoberta antes da implementacao do client. O probe nao chuta — lista o universo real (atributos, commodities, paises, statisticat categories) usando os endpoints meta da propria API quando disponiveis (`/commodityAttributes`, `/commodities`, `/countries`, etc.).
+**Justificativa:** descobrimos na sessao de 22/05/2026 que chutar IDs/categorias gera bugs silenciosos dificeis de detectar (atributo mapeado com ID errado passa em todos os testes mas retorna dado incorreto).
+**Impacto:** todo novo client em `connections/` deve ter um `scripts/probe_*.py` correspondente executado e revisado antes da implementacao.
+
+### D11 — Camada de comparacao fica em engines, nao em clients
+**Data:** 22/05/2026
+**Decisao:** a SPEC ja estabelece que connections sao I/O puro, mas isso foi explicitamente confirmado em decisao: calculos de variacao (YoY, WoW, vs. media 5 anos) vivem em `engines/`, com atomicos reutilizaveis em `utils.py`. Clients retornam dado bruto P06-wrapped e nunca fazem aritmetica sobre os valores.
+**Justificativa:** separacao de responsabilidades — um bug de calculo nao contamina a camada de coleta e vice-versa.
+**Impacto:** engines nao foram criados ainda — serao criados quando houver multiplos consumidores da logica de comparacao. Por ora os blocos `if __name__ == "__main__":` dos clients importam `utils.py` diretamente para simular o produto final durante desenvolvimento.
+
 ---
 
 ## Padroes de trabalho
@@ -72,7 +84,17 @@
 
 ## Licoes aprendidas
 
-(Vazio no inicio. Sera preenchido conforme bugs e correcoes acontecerem.)
+### L04 — Endpoints meta de APIs governamentais economizam horas
+**Data:** 22/05/2026
+APIs como USDA FAS PSD expoe endpoints especificos para listar atributos (`/commodityAttributes`), commodities (`/commodities`), paises (`/countries`). Sempre buscar esses endpoints meta antes de redigir probe de descoberta — eles sao a fonte canonica e evitam adivinhacao. Buscar primeiro na documentacao oficial; se nao houver, no Swagger/OpenAPI; se nem isso, em SDKs comunitarios.
+
+### L05 — Prompt grande no PowerShell trunca silenciosamente
+**Data:** 22/05/2026
+O PowerShell tem buffer limitado para colagem direta. Prompts longos colados sao silenciosamente cortados — o agente recebe metade e executa so essa metade. Sintoma: agente cumpre so uma fracao das tarefas listadas sem reportar erro. Solucao: salvar prompt em arquivo e usar `Get-Content prompt.txt | claude`, ou usar a UI integrada do VS Code (Claude Code extension) que nao tem esse problema.
+
+### L06 — Agentes diferentes tem capacidades muito diferentes
+**Data:** 22/05/2026
+GitHub Copilot e Claude Code coexistem no VS Code e parecem intercambiaveis na UI, mas modelos e limites sao distintos. Copilot Raptor mini falhou com 408 em prompt medio que Claude Code Sonnet executou sem problema. Identificar a extensao correta antes de mandar trabalho tecnico — nao assumir que qualquer assistente de codigo serve para qualquer tarefa.
 
 ---
 

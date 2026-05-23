@@ -52,3 +52,6 @@ logs/
 
 # Render / deployment
 .render/
+
+# Personal retrospectives (not versioned)
+retrospectives/
