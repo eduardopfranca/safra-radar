@@ -51,13 +51,25 @@
 
 ## 5. USDA — relatorios oficiais
 
-### 5.1 USDA NASS Quick Stats — ⚠️
+### 5.1 USDA NASS Quick Stats — ✅ Validado (parcial)
+- **Client:** `connections/usda_nass_client.py`
+- **Implementado:** `get_national_stocks` (estoques nacionais trimestrais) e `get_crop_progress` (progresso de plantio/colheita semanal).
+- **Descoberto via probe, ainda nao implementado:** Crop Condition, Acreage (area plantada/colhida por estado), Yield anual e Production anual. Ver DEBT-01.
 
-### 5.2 USDA WASDE — ⚠️
+### 5.2 USDA WASDE — ⚠️ Candidato
+- Sem implementacao ainda.
 
-### 5.3 USDA FAS Export Sales — ⚠️
+### 5.3 USDA FAS Export Sales — ⚠️ Probe completo, client pendente
+- **Probe:** `scripts/probe_usda_esr.py` — endpoints validados.
+- **Codigos confirmados:** Corn 401, Soybeans 801, Soybean Meal 901, Soybean Oil 902.
+- **Paises:** China nomeada (5700); outros paises via `allCountries`.
+- **Proximo passo:** implementar `connections/usda_fas_esr_client.py`. Ver DEBT-02.
 
-### 5.4 USDA FAS PSD Online — ⚠️
+### 5.4 USDA FAS PSD Online — ✅ Validado
+- **Client:** `connections/usda_fas_client.py`
+- **Implementado:** balanco completo (12 atributos: Area Planted, Area Harvested, Crush, Beginning Stocks, Ending Stocks, Production, Imports, Exports, Total Supply, Domestic Consumption, Yield, Stocks-to-Use) para 4 commodities (Corn, Soybeans, Soybean Meal, Soybean Oil) em 4 paises (Brazil, US, Argentina, China).
+- **Serie historica:** `get_country_balance_series` implementado.
+- **Nao mapeados:** EU-27 e World aggregate. Ver DEBT-04.
 
 ---
 
@@ -109,7 +121,9 @@
 | Cambio | BCB SGS | yfinance | ⚠️ |
 | Calendario de eventos | USDA + datas fixas | — | ⚠️ |
 | Analise rapida pos-evento | Editorial / heuristica | — | ⚠️ |
-| Estoques USDA | NASS Quick Stats + WASDE | — | ⚠️ |
+| Estoques USDA (EUA) | NASS Quick Stats | WASDE | ✅ parcial |
+| Balanco global oferta/demanda | FAS PSD Online | — | ✅ |
+| Exportacoes USDA | FAS Export Sales | — | ⚠️ probe ok |
 | ENSO | NOAA CPC | IRI Columbia | ⚠️ |
 | Premio porto | Noticias Agricolas | CEPEA/ESALQ | ⚠️ |
 

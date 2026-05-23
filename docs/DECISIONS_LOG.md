@@ -37,6 +37,30 @@
 **Justificativa:** publico alvo (medio produtor 500–3.000 ha) nao tem letramento em mercado financeiro. Traducao e diferencial central do produto.
 **Impacto:** Glossary.md sera mantido como fonte de verdade dos termos publicos. Conteudo editorial pos-evento segue a mesma regra.
 
+### D06 — Projeto Supabase dedicado
+**Data:** 21/05/2026
+**Decisao:** projeto Supabase criado especificamente para o Safra Radar — ref ID `lacgthfskkcrhmfahjzj`, regiao Sao Paulo (sa-east-1), plano Free.
+**Justificativa:** D01 estabelece o Safra Radar como projeto independente. Projeto Supabase compartilhado violaria a independencia.
+**Impacto:** todas as Edge Functions, SQL migrations e secrets vivem nesse projeto. Quando o Safra Radar for integrado ao Safra Segura, decisao de migracao ou bridge sera tomada com base no estado real do produto.
+
+### D07 — Conta Render em plano Free durante o MVP
+**Data:** 22/05/2026
+**Decisao:** backend hospedado no Render em plano Free durante validacao do produto. Cold start (~30s no primeiro request apos 15min de inatividade) e aceito como parte do MVP.
+**Justificativa:** otimizar custo durante validacao. Pagar plano antes de ter cliente seria gastar por boas praticas teoricas.
+**Impacto:** primeiro usuario do dia paga o custo de UX do cold start. Aceitavel ate volume justificar upgrade. Quando primeiro cliente pagante existir, avaliar Starter (~7 USD/mes) ou similar.
+
+### D08 — Branch principal `main`
+**Data:** 22/05/2026
+**Decisao:** branch principal do repositorio Git e `main`, nao `master`. Padrao adotado desde a criacao do repo via `git init -b main`.
+**Justificativa:** convencao moderna do GitHub e da industria desde 2020. Reduz friccao com tooling e documentacao externa.
+**Impacto:** comando de push de Eduardo passa a ser `git push origin main` (atualizar P05 se ainda menciona `master:main` — verificar e ajustar).
+
+### D09 — Claude Code como agente executor de codigo
+**Data:** 22/05/2026
+**Decisao:** Claude Code (CLI da Anthropic, instalado via `npm install -g @anthropic-ai/claude-code`) e o agente executor padrao para trabalho de codigo e arquivos do repositorio Python. Versao no momento da adocao: 2.1.148.
+**Justificativa:** integra com Claude Pro de Eduardo (sem custo adicional), opera direto no filesystem local (sem sandbox intermediario), suporta sessao interativa e prompt nao-interativo (`Get-Content prompt.txt | claude`).
+**Impacto:** Claude Code edita arquivos diretamente em `C:\Users\eduar\code\safra-radar`. Nunca executa comandos git (ver P05). Pode ser usado via CLI no PowerShell ou via extensao oficial da Anthropic no VS Code. GitHub Copilot NAO e Claude Code (licao L06).
+
 ### D10 — Probes-first para fontes novas
 **Data:** 22/05/2026
 **Decisao:** todo provedor de dado externo novo passa por probe de descoberta antes da implementacao do client. O probe nao chuta — lista o universo real (atributos, commodities, paises, statisticat categories) usando os endpoints meta da propria API quando disponiveis (`/commodityAttributes`, `/commodities`, `/countries`, etc.).
@@ -83,6 +107,18 @@
 ---
 
 ## Licoes aprendidas
+
+### L01 — Agentes executores saem de escopo sem guardrails explicitos
+**Data:** 22/05/2026
+Na primeira passada da Fase 0, o Claude Code: (a) inventou o arquivo `CLAUDE.md` que nao estava no escopo, (b) pre-criou subpastas `api/routers/` e `api/schemas/` antecipando a Fase 2, (c) ignorou a instrucao de rename `docs/README.md` para `docs/OVERVIEW.md`. Licao: prompts enxutos em "como executar", mas explicitos em "o que nao fazer" e em renames. Confiar no agente nao exclui guardrails de escopo.
+
+### L02 — Validacao humana e o checkpoint critico da cadeia
+**Data:** 22/05/2026
+Cada um dos desvios da L01 passaria silenciosamente se a validacao manual nao comparasse o output contra o prompt original. Validar contra o que o agente diz que fez (summary) NAO substitui validar contra o que foi pedido. Sem a validacao manual antes do `git push`, a Fase 0 teria ido para o GitHub com 3 desvios.
+
+### L03 — Git e sempre responsabilidade humana, mesmo quando o agente oferece executar
+**Data:** 22/05/2026
+Claude Code oferece rodar `git init`, `git add`, `git commit` quando termina trabalho. Recusar a oferta faz parte do trabalho — P05 nao e teorico. Mesma logica se aplica a qualquer outro agente (Cursor, Cline, Copilot). Push e commit ficam manual, sempre.
 
 ### L04 — Endpoints meta de APIs governamentais economizam horas
 **Data:** 22/05/2026
