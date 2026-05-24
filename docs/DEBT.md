@@ -11,6 +11,8 @@
 
 ### DEBT-01 — USDA NASS: categorias nao implementadas
 
+**RESOLVIDO em 23/05/2026** — implementados em `connections/usda_nass_client.py`: `get_crop_condition`, `get_crop_condition_series`, `get_crop_progress_series`, `get_acreage`, `get_yield`, `get_production`. Todos testados contra dados reais (16/16 chamadas status 200). Descoberta relevante: NASS usa `short_desc = "CORN - ACRES PLANTED"` (nao "MEASURED IN ACRES") e o campo de selecao do numero final e `reference_period_desc == "YEAR"`. Registrado em divergencias abaixo.
+
 **Registrado:** 22/05/2026
 **Arquivo:** `connections/usda_nass_client.py`
 
