@@ -51,19 +51,27 @@
 
 ## 5. USDA — relatorios oficiais
 
-### 5.1 USDA NASS Quick Stats — ✅ Validado (parcial)
+### 5.1 USDA NASS Quick Stats — ✅ Validado
 - **Client:** `connections/usda_nass_client.py`
-- **Implementado:** `get_national_stocks` (estoques nacionais trimestrais) e `get_crop_progress` (progresso de plantio/colheita semanal).
-- **Descoberto via probe, ainda nao implementado:** Crop Condition, Acreage (area plantada/colhida por estado), Yield anual e Production anual. Ver DEBT-01.
+- **Implementado (8 metodos):**
+  - `get_national_stocks` — estoques nacionais trimestrais (BU)
+  - `get_crop_progress` — progresso semanal de plantio e colheita (%)
+  - `get_crop_progress_series` — progresso multi-ano para comparacao YoY / media 5 anos
+  - `get_crop_condition` — condicao semanal da cultura (VERY POOR / POOR / FAIR / GOOD / EXCELLENT, em %)
+  - `get_crop_condition_series` — condicao multi-ano para comparacao YoY / media 5 anos
+  - `get_acreage` — area plantada e colhida final de safra (ACRES), filtro `reference_period_desc == YEAR`
+  - `get_yield` — produtividade final (BU/ACRE), prefere registro GRAIN para milho
+  - `get_production` — producao total (BU), prefere registro GRAIN para milho
+- **Commodities:** Corn, Soybeans.
 
 ### 5.2 USDA WASDE — ⚠️ Candidato
 - Sem implementacao ainda.
 
-### 5.3 USDA FAS Export Sales — ⚠️ Probe completo, client pendente
-- **Probe:** `scripts/probe_usda_esr.py` — endpoints validados.
+### 5.3 USDA FAS Export Sales — ✅ Validado
+- **Client:** `connections/usda_esr_client.py`
+- **Implementado:** `get_weekly_exports`, `get_weekly_exports_series`, `get_latest_week`, `list_commodities`, `list_countries`.
 - **Codigos confirmados:** Corn 401, Soybeans 801, Soybean Meal 901, Soybean Oil 902.
-- **Paises:** China nomeada (5700); outros paises via `allCountries`.
-- **Proximo passo:** implementar `connections/usda_fas_esr_client.py`. Ver DEBT-02.
+- **Paises:** China nomeada (5700); 211 paises via `list_countries()`. Demais via `allCountries`.
 
 ### 5.4 USDA FAS PSD Online — ✅ Validado
 - **Client:** `connections/usda_fas_client.py`
@@ -121,7 +129,7 @@
 | Cambio | BCB SGS | yfinance | ⚠️ |
 | Calendario de eventos | USDA + datas fixas | — | ⚠️ |
 | Analise rapida pos-evento | Editorial / heuristica | — | ⚠️ |
-| Estoques USDA (EUA) | NASS Quick Stats | WASDE | ✅ parcial |
+| Estoques USDA (EUA) | NASS Quick Stats | WASDE | ✅ |
 | Balanco global oferta/demanda | FAS PSD Online | — | ✅ |
 | Exportacoes USDA | FAS Export Sales | — | ⚠️ probe ok |
 | ENSO | NOAA CPC | IRI Columbia | ⚠️ |

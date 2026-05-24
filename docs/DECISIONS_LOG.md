@@ -53,7 +53,7 @@
 **Data:** 22/05/2026
 **Decisao:** branch principal do repositorio Git e `main`, nao `master`. Padrao adotado desde a criacao do repo via `git init -b main`.
 **Justificativa:** convencao moderna do GitHub e da industria desde 2020. Reduz friccao com tooling e documentacao externa.
-**Impacto:** comando de push de Eduardo passa a ser `git push origin main` (atualizar P05 se ainda menciona `master:main` — verificar e ajustar).
+**Impacto:** comando de push de Eduardo passa a ser `git push origin main`. P05 atualizado em 23/05/2026.
 
 ### D09 — Claude Code como agente executor de codigo
 **Data:** 22/05/2026
@@ -96,7 +96,7 @@
 
 ### P05 — Git push e responsabilidade de Eduardo
 **Data:** 21/05/2026
-**Padrao:** Claude Code prepara commits, mas o push e feito manualmente por Eduardo (`git push origin master:main`). Documentacao .md atualizada via Claude Code sempre com instrucao explicita "nao commitar, nao pushar".
+**Padrao:** Claude Code prepara commits, mas o push e feito manualmente por Eduardo (`git push origin main`). Documentacao .md atualizada via Claude Code sempre com instrucao explicita "nao commitar, nao pushar".
 **Justificativa:** controle de versao consciente. Eduardo decide quando e o que sobe.
 
 ### P06 — Citar fonte e timestamp em todo dado externo
@@ -131,6 +131,14 @@ O PowerShell tem buffer limitado para colagem direta. Prompts longos colados sao
 ### L06 — Agentes diferentes tem capacidades muito diferentes
 **Data:** 22/05/2026
 GitHub Copilot e Claude Code coexistem no VS Code e parecem intercambiaveis na UI, mas modelos e limites sao distintos. Copilot Raptor mini falhou com 408 em prompt medio que Claude Code Sonnet executou sem problema. Identificar a extensao correta antes de mandar trabalho tecnico — nao assumir que qualquer assistente de codigo serve para qualquer tarefa.
+
+### L07 — Probes devem cobrir todas as statisticcat_desc consumidas
+**Data:** 23/05/2026
+O probe NASS original cobriu STOCKS e PROGRESS mas deixou AREA PLANTED, AREA HARVESTED, YIELD, PRODUCTION e CONDITION sem inspecao. Resultado: na implementacao do DEBT-01 o agente assumiu padrao de short_desc errado para AREA (esperou "MEASURED IN ACRES", recebeu "ACRES PLANTED"), precisou rodar probe focado em runtime para corrigir. Licao: probe-first significa cobrir todas as categorias que serao consumidas pelo client, nao apenas uma amostra representativa.
+
+### L08 — Ciclo "falha no teste → probe focado → correcao" funciona dentro da mesma sessao
+**Data:** 23/05/2026
+Quando um filtro sobre dado de API governamental retorna vazio, a hipotese mais provavel e divergencia entre o formato real e o presumido — nao bug de logica do client. Padrao validado nesta sessao: rodar probe targeted contra o endpoint especifico, comparar com o filtro, ajustar, re-rodar suite. O Claude Code executou esse ciclo autonomamente para o `get_acreage` em poucos minutos, sem precisar de nova rodada de validacao humana.
 
 ---
 
