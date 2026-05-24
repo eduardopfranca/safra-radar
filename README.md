@@ -70,4 +70,4 @@ No layer imports from layers above it. Engines are pure computation — no I/O, 
 
 ## Git workflow
 
-Eduardo handles all git operations manually. Claude Code prepares commits but **never pushes** without explicit instruction (`git push origin master:main` is Eduardo's responsibility).
+Eduardo handles all git operations manually. Claude Code prepares commits but **never pushes** without explicit instruction (`git push origin main` is Eduardo's responsibility).

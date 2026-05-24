@@ -218,7 +218,7 @@ Glossario completo sera mantido em `GLOSSARY.md` quando o frontend precisar.
 1. **Debate-first, code-after:** arquitetura sempre debatida antes de implementacao.
 2. **Uma etapa por vez:** uma decisao, um arquivo, um prompt. Aguardar confirmacao antes de avancar.
 3. **Multi-agente com fronteiras estritas:** ver `AGENTS_BOUNDARIES.md`.
-4. **Eduardo administra git manualmente** — `git push origin master:main`. Claude Code nunca da push sem instrucao explicita.
+4. **Eduardo administra git manualmente** — `git push origin main`. Claude Code nunca da push sem instrucao explicita.
 5. **Nunca trabalhar em arquivo sem o conteudo completo colado no chat.**
 6. **Validar antes de avancar** — manual review apos cada fase.
 

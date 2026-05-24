@@ -16,7 +16,7 @@
 | **Lovable** | Frontend React, chamadas a Edge Function `api-proxy`, leitura via cliente JS Supabase de tabelas publicas (cache de snapshots, calendario, editorial), UI, estado, formularios, exibicao. | API Python (chamada direta). |
 | **Supabase Dashboard** | SQL migrations, Edge Functions, secrets, RLS policies, triggers, constraints, criacao/edicao de tabelas, funcoes PL/pgSQL. | — |
 | **Render Dashboard** | Env vars do backend, deploy settings, upgrade de plano, logs de producao. | — |
-| **Eduardo (humano)** | `git push origin master:main`, decisoes de negocio, configuracao manual de Supabase/Render/Vercel/Lovable, validacao por fase. | — |
+| **Eduardo (humano)** | `git push origin main`, decisoes de negocio, configuracao manual de Supabase/Render/Vercel/Lovable, validacao por fase. | — |
 
 ---
 

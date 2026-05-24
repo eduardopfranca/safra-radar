@@ -13,7 +13,7 @@
 ## Hard constraints
 
 - **Never recommend a sale.** Never output "sell X% now", "lock this in". Deliver data, historical context, and clear visuals. The decision belongs to the producer. Any feature approaching automatic recommendation requires Eduardo's explicit approval in DECISIONS_LOG before implementation.
-- **Never run git push.** Eduardo handles all pushes manually (`git push origin master:main`). Prepare commits only when asked, never push.
+- **Never run git push.** Eduardo handles all pushes manually (`git push origin main`). Prepare commits only when asked, never push.
 - **Never work on a file without its full current content.** Eduardo must paste the complete current file content in the chat before any edit. Never assume what exists.
 - **One step at a time.** One decision, one file, one prompt. Wait for confirmation before advancing.
 - **Boundary test before every execution prompt.** Ask: "Does this prompt touch only one layer?" If not, decompose into separate prompts — one per agent.
